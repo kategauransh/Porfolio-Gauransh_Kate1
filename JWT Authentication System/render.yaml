@@ -1,0 +1,36 @@
+services:
+  # ==========================================
+  # Spring Boot Backend Service
+  # ==========================================
+  - type: web
+    name: jwt-auth-backend
+    env: docker
+    rootDir: jwt-auth-backend
+    dockerfilePath: Dockerfile
+    dockerContext: .
+    plan: free
+    envVars:
+      - key: PORT
+        value: 8080
+      - key: SPRING_DATASOURCE_URL
+        sync: false # Render will prompt you for this value
+      - key: SPRING_DATASOURCE_USERNAME
+        sync: false # Render will prompt you for this value
+      - key: SPRING_DATASOURCE_PASSWORD
+        sync: false # Render will prompt you for this value
+      - key: SPRING_JPA_DATABASE_PLATFORM
+        value: org.hibernate.dialect.PostgreSQLDialect
+
+  # ==========================================
+  # React Vite Frontend Static Service
+  # ==========================================
+  - type: web
+    name: jwt-auth-frontend
+    env: static
+    rootDir: jwt-auth-frontend
+    buildCommand: npm run build
+    publishPath: dist
+    plan: free
+    envVars:
+      - key: VITE_API_BASE_URL
+        sync: false # Render will prompt you for your deployed backend API URL
